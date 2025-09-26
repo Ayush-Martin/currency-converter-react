@@ -1,4 +1,4 @@
-import React,{useId} from "react";
+import React, { useId } from "react";
 
 const InputBox = ({
   label,
@@ -10,37 +10,67 @@ const InputBox = ({
   amountDisabled = false,
   currencyDisabled = false,
   className = "",
+  dark = false, // allow light/dark toggle
 }) => {
-    const currencyId=useId()
+  const currencyId = useId();
 
   return (
-    <div className={`bg-white p-3 rounded-lg text-sm flex ${className} `}>
+    <div
+      className={`flex items-end justify-between gap-3 p-4 rounded-xl border shadow-sm ${
+        dark
+          ? "bg-gray-800 border-gray-700 text-gray-100"
+          : "bg-white border-gray-200 text-gray-900"
+      } ${className}`}
+    >
+      {/* Left Side: Amount */}
       <div className="w-1/2">
-        <label htmlFor={currencyId} className="inline-block mb-2 text-black/40">{label}</label>
+        <label
+          htmlFor={currencyId}
+          className={`block mb-2 text-xs font-semibold uppercase tracking-wide ${
+            dark ? "text-gray-400" : "text-gray-500"
+          }`}
+        >
+          {label}
+        </label>
         <input
           type="number"
-          className="w-full bg-transparent outline-none py-1.5"
-          placeholder="Amount"
-          disabled={amountDisabled}
-          value={amount}
           id={currencyId}
+          value={amount}
+          placeholder="0.00"
+          disabled={amountDisabled}
           onChange={(e) =>
             onAmountChange && onAmountChange(Number(e.target.value))
           }
+          className={`w-full rounded-lg px-3 py-2 text-sm font-medium outline-none transition ${
+            dark
+              ? "bg-gray-900 text-white placeholder-gray-500 focus:ring-2 focus:ring-indigo-500"
+              : "bg-gray-50 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-indigo-400"
+          }`}
         />
       </div>
-      
-      <div className="flex flex-wrap justify-end w-1/2 text-right">
-        <p>currency type</p>
+
+      {/* Right Side: Currency Dropdown */}
+      <div className="w-1/2 text-right">
+        <label
+          className={`block mb-2 text-xs font-semibold uppercase tracking-wide ${
+            dark ? "text-gray-400" : "text-gray-500"
+          }`}
+        >
+          Currency
+        </label>
         <select
-          className="px-1 py-1 bg-gray-100 rounded-lg outline-none cursor-pointer"
           value={selectedCurrency}
-          onChange={(e) => onCurrencyChange && onCurrencyChange(e.target.value)}
           disabled={currencyDisabled}
+          onChange={(e) => onCurrencyChange && onCurrencyChange(e.target.value)}
+          className={`w-full rounded-lg px-3 py-2 text-sm font-medium cursor-pointer outline-none transition ${
+            dark
+              ? "bg-gray-900 text-white focus:ring-2 focus:ring-indigo-500"
+              : "bg-gray-50 text-gray-900 focus:ring-2 focus:ring-indigo-400"
+          }`}
         >
           {currencyOptions.map((currency) => (
             <option key={currency} value={currency}>
-              {currency}
+              {currency.toUpperCase()}
             </option>
           ))}
         </select>
